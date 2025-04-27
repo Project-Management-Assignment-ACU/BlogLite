@@ -44,4 +44,8 @@ env/
 
 # OS specific files
 .DS_Store
-Thumbs.db 
+Thumbs.db
+
+# Ignore migration compiled files but keep migrations
+*/migrations/*.pyc
+*/migrations/__pycache__/ 
