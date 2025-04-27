@@ -1,0 +1,21 @@
+<!-- templates/blog/detail.html -->
+{% extends "base.html" %}
+
+{% block title %}
+{{ post.title }} | Simple Blog
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-4 mb-3">{{ post.title }}</h1>
+    <p class="text-muted small">
+        Published on {{ post.timestamp|date:"F j, Y" }}
+    </p>
+    <div class="mt-4">
+        {{ post.body|linebreaks }}
+    </div>
+    <div class="mt-5">
+        <a href="{% url 'blog:list' %}" class="btn btn-outline-secondary">← Back to Blog</a>
+    </div>
+</div>
+{% endblock %}
