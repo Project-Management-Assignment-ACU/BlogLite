@@ -7,7 +7,6 @@ from django.conf import settings
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView as DjangoLoginView
-from django.contrib.auth.views import LogoutView as DjangoLogoutView
 from .forms import ContactForm, UserRegistrationForm
 
 # Create your views here.
@@ -82,13 +81,17 @@ class CustomLoginView(FormView):
         messages.error(self.request, "Invalid username or password. Please try again.")
         return super().form_invalid(form)
 
-class CustomLogoutView(DjangoLogoutView):
-    next_page = reverse_lazy('core:home')
+def logout_view(request):
+    """Simple logout view that renders a confirmation page and processes logout"""
+    if request.method == 'POST':
+        # User confirmed logout
+        username = request.user.username  # Store before logout
+        logout(request)
+        messages.success(request, f"You have been logged out successfully.")
+        return redirect('core:home')
     
-    def dispatch(self, request, *args, **kwargs):
-        response = super().dispatch(request, *args, **kwargs)
-        messages.success(request, "You have been successfully logged out.")
-        return response
+    # GET request - show the logout confirmation page
+    return render(request, 'auth/logout.html')
 
 class RegisterView(CreateView):
     template_name = 'auth/register.html'

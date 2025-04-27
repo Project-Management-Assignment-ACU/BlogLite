@@ -19,7 +19,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from core.views import CustomLoginView, CustomLogoutView, RegisterView
+from core.views import CustomLoginView, RegisterView, logout_view
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -27,7 +27,7 @@ urlpatterns = [
     path("", include("core.urls", namespace="core")),
     # Authentication URLs
     path("login/", CustomLoginView.as_view(), name="login"),
-    path("logout/", CustomLogoutView.as_view(), name="logout"),
+    path("logout/", logout_view, name="logout"),
     path("register/", RegisterView.as_view(), name="register"),
 ]
 

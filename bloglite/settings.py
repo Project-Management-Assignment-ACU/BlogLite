@@ -132,5 +132,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email settings
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Development only
-DEFAULT_FROM_EMAIL = 'simpleblog@example.com'
+DEFAULT_FROM_EMAIL = 'noreply@example.com'
 CONTACT_EMAIL = 'contact@example.com'  # Where contact form messages will be sent
+
+# Login and Logout redirects
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
