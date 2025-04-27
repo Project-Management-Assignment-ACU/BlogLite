@@ -11,7 +11,7 @@
 | Home, About, Contact pages | REST APIs, separate JS front‑end |
 | BlogPost model (title, body, timestamp) with CRUD | Docker, CI/CD pipelines |
 | Contact form that e‑mails site owner | Complex auth/roles, payments |
-| Bootstrap 5 via CDN for quick styling | Kubernetes, container orchestration |
+| Bootstrap 5 via CDN for quick styling | Kubernetes, container orchestration |
 | Manual deployment guide (e.g. PythonAnywhere) | GitHub Actions automation |
 
 ---
@@ -33,7 +33,7 @@
 
 ---
 ## 4 · Work‑Breakdown Structure (WBS)
-### 4.1 Member A — Front‑end (14 Tasks)
+### 4.1 Member A — Front‑end (15 Tasks)
 | ID | Issue Title | Key Files |
 |---|---|---|
 | F‑01 | Design `base.html` layout | templates/base.html |
@@ -50,8 +50,9 @@
 | F‑12 | UX smoke‑test checklist | docs/ux‑checklist.md |
 | F‑13 | Login page template | templates/auth/login.html |
 | F‑14 | Register page template | templates/auth/register.html |
+| F‑15 | Log Out page template | templates/auth/logout.html |
 
-### 4.2 Member B — Back‑end (14 Tasks)
+### 4.2 Member B — Back‑end (15 Tasks)
 | ID | Issue Title | Key Files |
 |---|---|---|
 | B‑01 | `django‑admin startproject` | manage.py, settings.py |
@@ -68,6 +69,7 @@
 | B‑12 | Update README (dev setup) | README.md |
 | B‑13 | Connect views with templates | blog/views.py, templates/* |
 | B‑14 | Views For Login and Register | core/views.py, core/forms.py |
+| B‑15 | Post Creation Page | blog/views.py, blog/forms.py |
 
 ### 4.3 Member C — QA & Documentation (12 Tasks)
 | ID | Issue Title | Key Files |
