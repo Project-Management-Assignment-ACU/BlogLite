@@ -51,7 +51,7 @@
 | F‑13 | Login page template | templates/auth/login.html |
 | F‑14 | Register page template | templates/auth/register.html |
 
-### 4.2 Member B — Back‑end (13 Tasks)
+### 4.2 Member B — Back‑end (14 Tasks)
 | ID | Issue Title | Key Files |
 |---|---|---|
 | B‑01 | `django‑admin startproject` | manage.py, settings.py |
@@ -67,6 +67,7 @@
 | B‑11 | Fixture with demo posts | blog/fixtures/demo.json |
 | B‑12 | Update README (dev setup) | README.md |
 | B‑13 | Connect views with templates | blog/views.py, templates/* |
+| B‑14 | Views For Login and Register | core/views.py, core/forms.py |
 
 ### 4.3 Member C — QA & Documentation (12 Tasks)
 | ID | Issue Title | Key Files |
