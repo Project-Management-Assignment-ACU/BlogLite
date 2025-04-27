@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
+from django.contrib import messages
+from django.http import HttpResponseRedirect
 from .models import BlogPost
 from .forms import BlogPostForm
 
@@ -65,32 +67,123 @@ class BlogPostDetailView(DetailView):
 
 
 class BlogPostCreateView(LoginRequiredMixin, CreateView):
+    """
+    View for creating a new blog post.
+    Requires user to be logged in.
+    Automatically assigns the current user as the author.
+    """
     model = BlogPost
     template_name = 'blog/form.html'
     form_class = BlogPostForm
+    login_url = '/login/'  # Where to redirect if user is not logged in
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Create a New Blog Post'
+        context['button_text'] = 'Create Post'
+        return context
     
     def form_valid(self, form):
+        # Set the author to current user
         form.instance.author = self.request.user
-        return super().form_valid(form)
+        
+        # Save the form
+        response = super().form_valid(form)
+        
+        # Add a success message
+        messages.success(
+            self.request, 
+            f'Your blog post "{form.instance.title}" has been created successfully!'
+        )
+        
+        return response
+    
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            'There was an error with your submission. Please check the form and try again.'
+        )
+        return super().form_invalid(form)
 
 
-class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
+class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    """
+    View for updating an existing blog post.
+    Requires user to be logged in and the author of the post.
+    """
     model = BlogPost
     template_name = 'blog/form.html'
     form_class = BlogPostForm
     slug_url_kwarg = 'slug'
+    login_url = '/login/'
     
-    def get_queryset(self):
-        # Only allow users to edit their own posts
-        return BlogPost.objects.filter(author=self.request.user)
+    def test_func(self):
+        """Test if current user is the author of the post"""
+        post = self.get_object()
+        return self.request.user == post.author
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = f'Edit Blog Post: {self.get_object().title}'
+        context['button_text'] = 'Update Post'
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request, 
+            f'The blog post "{form.instance.title}" has been updated successfully!'
+        )
+        return response
+    
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            'There was an error updating your post. Please check the form and try again.'
+        )
+        return super().form_invalid(form)
+    
+    def handle_no_permission(self):
+        """Override to provide custom message when user is not the author"""
+        if self.request.user.is_authenticated:
+            messages.error(
+                self.request,
+                "You don't have permission to edit this post."
+            )
+            return HttpResponseRedirect(reverse_lazy('blog:post_list'))
+        return super().handle_no_permission()
 
 
-class BlogPostDeleteView(LoginRequiredMixin, DeleteView):
+class BlogPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    """
+    View for deleting a blog post.
+    Requires user to be logged in and the author of the post.
+    """
     model = BlogPost
     template_name = 'blog/confirm_delete.html'
     success_url = reverse_lazy('blog:post_list')
     slug_url_kwarg = 'slug'
+    login_url = '/login/'
     
-    def get_queryset(self):
-        # Only allow users to delete their own posts
-        return BlogPost.objects.filter(author=self.request.user)
+    def test_func(self):
+        """Test if current user is the author of the post"""
+        post = self.get_object()
+        return self.request.user == post.author
+    
+    def delete(self, request, *args, **kwargs):
+        post = self.get_object()
+        messages.success(
+            self.request,
+            f'The blog post "{post.title}" has been deleted successfully!'
+        )
+        return super().delete(request, *args, **kwargs)
+    
+    def handle_no_permission(self):
+        """Override to provide custom message when user is not the author"""
+        if self.request.user.is_authenticated:
+            messages.error(
+                self.request,
+                "You don't have permission to delete this post."
+            )
+            return HttpResponseRedirect(reverse_lazy('blog:post_list'))
+        return super().handle_no_permission()

@@ -19,22 +19,118 @@ New Post | Simple Blog
         {% endif %}
     </h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <div class="d-grid mt-4">
-            <button type="submit" class="btn btn-primary">
-                {% if form.instance.pk %}
-                    Update Post
-                {% else %}
-                    Create Post
-                {% endif %}
-            </button>
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <form method="post" id="postForm">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.title.id_for_label }}" class="form-label">Post Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                                <div class="text-danger small mt-1">{{ form.title.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.body.id_for_label }}" class="form-label">Content</label>
+                            {{ form.body }}
+                            {% if form.body.help_text %}
+                                <div class="form-text">{{ form.body.help_text }}</div>
+                            {% endif %}
+                            {% if form.body.errors %}
+                                <div class="text-danger small mt-1">{{ form.body.errors }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="{% url 'blog:post_list' %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                {% if form.instance.pk %}
+                                    Update Post
+                                {% else %}
+                                    Create Post
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Content Preview</h5>
+                    <button type="button" class="btn btn-sm btn-outline-primary" id="refreshPreview">Refresh Preview</button>
+                </div>
+                <div class="card-body">
+                    <div id="previewContent" class="markdown-preview">
+                        <p class="text-muted fst-italic">Your formatted content will appear here as you type...</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{% url 'blog:post_list' %}" class="btn btn-link">← Back to Blog</a>
+            </div>
         </div>
-    </form>
-
-    <div class="mt-4 text-center">
-        <a href="{% url 'blog:post_list' %}" class="btn btn-link">← Back to Blog</a>
     </div>
 </div>
+
+<!-- Simple Markdown Converter (You may want to use a proper JS library in production) -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const bodyInput = document.getElementById('{{ form.body.id_for_label }}');
+        const previewDiv = document.getElementById('previewContent');
+        const refreshBtn = document.getElementById('refreshPreview');
+        
+        // Basic Markdown converter function
+        function convertMarkdownToHTML(markdown) {
+            if (!markdown) return '<p class="text-muted fst-italic">Start typing to see preview...</p>';
+            
+            // Convert headers
+            let html = markdown
+                // Headers
+                .replace(/^### (.+)$/gm, '<h3>$1</h3>')
+                .replace(/^## (.+)$/gm, '<h2>$1</h2>')
+                .replace(/^# (.+)$/gm, '<h1>$1</h1>')
+                
+                // Bold and italic
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.+?)\*/g, '<em>$1</em>')
+                
+                // Links
+                .replace(/\[(.+?)\]\((.+?)\)/g, '<a href="$2" target="_blank">$1</a>')
+                
+                // Lists
+                .replace(/^\- (.+)$/gm, '<li>$1</li>')
+                
+                // Images
+                .replace(/!\[(.+?)\]\((.+?)\)/g, '<img src="$2" alt="$1" class="img-fluid">')
+                
+                // Paragraphs
+                .replace(/^(?!<[h|l|u])/gm, '<p>')
+                .replace(/([^>])$/gm, '$1</p>');
+            
+            return html;
+        }
+        
+        // Update preview
+        function updatePreview() {
+            previewDiv.innerHTML = convertMarkdownToHTML(bodyInput.value);
+        }
+        
+        // Auto-update preview as user types
+        bodyInput.addEventListener('input', function() {
+            updatePreview();
+        });
+        
+        // Manual refresh button
+        refreshBtn.addEventListener('click', updatePreview);
+        
+        // Initial preview
+        updatePreview();
+    });
+</script>
 {% endblock %}
