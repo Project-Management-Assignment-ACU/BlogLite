@@ -24,6 +24,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("blog/", include("blog.urls", namespace="blog")),
     path("", include("core.urls", namespace="core")),
+    path("accounts/", include("django.contrib.auth.urls")),  # Django auth views
 ]
 
 # Add media file handling in development
