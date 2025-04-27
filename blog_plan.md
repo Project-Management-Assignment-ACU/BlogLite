@@ -33,7 +33,7 @@
 
 ---
 ## 4 · Work‑Breakdown Structure (WBS)
-### 4.1 Member A — Front‑end (12 Tasks)
+### 4.1 Member A — Front‑end (14 Tasks)
 | ID | Issue Title | Key Files |
 |---|---|---|
 | F‑01 | Design `base.html` layout | templates/base.html |
@@ -48,8 +48,10 @@
 | F‑10 | 404 error page | templates/404.html |
 | F‑11 | Responsive tweaks (Bootstrap) | static/css/mobile.css |
 | F‑12 | UX smoke‑test checklist | docs/ux‑checklist.md |
+| F‑13 | Login page template | templates/auth/login.html |
+| F‑14 | Register page template | templates/auth/register.html |
 
-### 4.2 Member B — Back‑end (12 Tasks)
+### 4.2 Member B — Back‑end (13 Tasks)
 | ID | Issue Title | Key Files |
 |---|---|---|
 | B‑01 | `django‑admin startproject` | manage.py, settings.py |
@@ -64,6 +66,7 @@
 | B‑10 | Unit tests for views | blog/tests/test_views.py |
 | B‑11 | Fixture with demo posts | blog/fixtures/demo.json |
 | B‑12 | Update README (dev setup) | README.md |
+| B‑13 | Connect views with templates | blog/views.py, templates/* |
 
 ### 4.3 Member C — QA & Documentation (12 Tasks)
 | ID | Issue Title | Key Files |
@@ -119,7 +122,7 @@ simple_blog/
 ---
 ### Next Steps
 1. Replace **Member A/B/C** with real names.  
-2. Create 36 GitHub Issues from WBS and organise them on a Kanban board.  
+2. Create 39 GitHub Issues from WBS and organise them on a Kanban board.  
 3. Start Week‑1 tasks: repo → Django init → basic pages.
 
 Happy coding! 🎉
