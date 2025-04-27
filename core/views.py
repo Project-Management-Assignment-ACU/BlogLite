@@ -1,10 +1,14 @@
 from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, CreateView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
-from .forms import ContactForm
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.views import LoginView as DjangoLoginView
+from django.contrib.auth.views import LogoutView as DjangoLogoutView
+from .forms import ContactForm, UserRegistrationForm
 
 # Create your views here.
 
@@ -56,3 +60,47 @@ class ContactView(FormView):
             )
             
         return super().form_valid(form)
+
+class CustomLoginView(FormView):
+    template_name = 'auth/login.html'
+    form_class = AuthenticationForm
+    success_url = reverse_lazy('core:home')
+    
+    def form_valid(self, form):
+        username = form.cleaned_data.get('username')
+        password = form.cleaned_data.get('password')
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            login(self.request, user)
+            messages.success(self.request, f"Welcome back, {username}!")
+            return super().form_valid(form)
+        else:
+            return self.form_invalid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "Invalid username or password. Please try again.")
+        return super().form_invalid(form)
+
+class CustomLogoutView(DjangoLogoutView):
+    next_page = reverse_lazy('core:home')
+    
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        messages.success(request, "You have been successfully logged out.")
+        return response
+
+class RegisterView(CreateView):
+    template_name = 'auth/register.html'
+    form_class = UserRegistrationForm
+    success_url = reverse_lazy('login')
+    
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        username = form.cleaned_data.get('username')
+        messages.success(self.request, f"Account created successfully for {username}! You can now log in.")
+        return response
+    
+    def form_invalid(self, form):
+        messages.error(self.request, "There was an error with your registration. Please check the form and try again.")
+        return super().form_invalid(form)

@@ -19,12 +19,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from core.views import CustomLoginView, CustomLogoutView, RegisterView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("blog/", include("blog.urls", namespace="blog")),
     path("", include("core.urls", namespace="core")),
-    path("accounts/", include("django.contrib.auth.urls")),  # Django auth views
+    # Authentication URLs
+    path("login/", CustomLoginView.as_view(), name="login"),
+    path("logout/", CustomLogoutView.as_view(), name="logout"),
+    path("register/", RegisterView.as_view(), name="register"),
 ]
 
 # Add media file handling in development
