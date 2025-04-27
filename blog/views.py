@@ -3,6 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from .models import BlogPost
+from .forms import BlogPostForm
 
 
 class BlogPostListView(ListView):
@@ -66,7 +67,7 @@ class BlogPostDetailView(DetailView):
 class BlogPostCreateView(LoginRequiredMixin, CreateView):
     model = BlogPost
     template_name = 'blog/form.html'
-    fields = ['title', 'body']
+    form_class = BlogPostForm
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -76,7 +77,7 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
 class BlogPostUpdateView(LoginRequiredMixin, UpdateView):
     model = BlogPost
     template_name = 'blog/form.html'
-    fields = ['title', 'body']
+    form_class = BlogPostForm
     slug_url_kwarg = 'slug'
     
     def get_queryset(self):
