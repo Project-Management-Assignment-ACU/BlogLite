@@ -1,16 +1,27 @@
 <!-- templates/about.html -->
 {% extends "base.html" %}
 
-{% block title %}
-About | Simple Blog
-{% endblock %}
+{% block title %}About | Simple Blog{% endblock %}
 
 {% block content %}
-<div class="text-center">
-    <h1 class="display-4">About Simple Blog</h1>
-    <p class="lead mt-3">
-        Simple Blog is a lightweight blogging platform built as a student project.
-        Our goal is to create a clean and simple blogging experience using Django and Bootstrap.
-    </p>
+<div class="row">
+    <div class="col-md-8 mx-auto">
+        <h1 class="mb-4">About Simple Blog</h1>
+        <p class="lead">A lightweight Django blog for learning web development fundamentals.</p>
+        
+        <div class="card mt-5">
+            <div class="card-body">
+                <h2 class="card-title h4">Project Details</h2>
+                <p>This project was created as a student exercise to demonstrate Django's core features:</p>
+                <ul>
+                    <li>Model-View-Template architecture</li>
+                    <li>Class-based views</li>
+                    <li>Django admin customization</li>
+                    <li>User authentication</li>
+                    <li>Form handling</li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
