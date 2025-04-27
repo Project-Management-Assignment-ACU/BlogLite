@@ -1,0 +1,47 @@
+<!-- templates/partials/messages.html -->
+{% if messages %}
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    {% for message in messages %}
+    <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="5000">
+        <div class="toast-header {% if message.tags %}bg-{{ message.tags }}{% if message.tags == 'error' %} bg-danger{% endif %} text-white{% endif %}">
+            <strong class="me-auto">
+                {% if message.tags == 'success' %}Success{% endif %}
+                {% if message.tags == 'info' %}Information{% endif %}
+                {% if message.tags == 'warning' %}Warning{% endif %}
+                {% if message.tags == 'error' %}Error{% endif %}
+            </strong>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            {{ message }}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    // Auto-close toasts after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        let toastElList = document.querySelectorAll('.toast');
+        let toastList = [...toastElList].map(toastEl => {
+            // Create toast instances
+            let toast = new bootstrap.Toast(toastEl, {
+                autohide: true,
+                delay: 5000
+            });
+            
+            // Auto show on page load
+            toast.show();
+            
+            return toast;
+        });
+        
+        // Remove toasts after they're hidden
+        toastElList.forEach(toast => {
+            toast.addEventListener('hidden.bs.toast', function () {
+                toast.remove();
+            });
+        });
+    });
+</script>
+{% endif %} 
