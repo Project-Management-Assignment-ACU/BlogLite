@@ -1,0 +1,22 @@
+/* static/css/mobile.css */
+
+/* Küçük ekranlarda (mobil) başlıkları biraz küçült */
+@media (max-width: 576px) {
+    h1, .display-1, .display-4, .display-5 {
+      font-size: 2rem;
+    }
+  
+    .navbar-brand {
+      font-size: 1.25rem;
+    }
+  
+    .btn {
+      font-size: 0.9rem;
+      padding: 0.5rem 1rem;
+    }
+  
+    footer small {
+      font-size: 0.8rem;
+    }
+  }
+  
