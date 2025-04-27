@@ -1,0 +1,40 @@
+<!-- templates/blog/form.html -->
+{% extends "base.html" %}
+
+{% block title %}
+{% if form.instance.pk %}
+Edit Post | Simple Blog
+{% else %}
+New Post | Simple Blog
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="display-5 mb-4 text-center">
+        {% if form.instance.pk %}
+            Edit Blog Post
+        {% else %}
+            New Blog Post
+        {% endif %}
+    </h1>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="d-grid mt-4">
+            <button type="submit" class="btn btn-primary">
+                {% if form.instance.pk %}
+                    Update Post
+                {% else %}
+                    Create Post
+                {% endif %}
+            </button>
+        </div>
+    </form>
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'blog:list' %}" class="btn btn-link">← Back to Blog</a>
+    </div>
+</div>
+{% endblock %}
