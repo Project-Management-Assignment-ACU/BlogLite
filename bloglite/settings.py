@@ -129,3 +129,8 @@ MEDIA_ROOT = BASE_DIR / "media"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Development only
+DEFAULT_FROM_EMAIL = 'simpleblog@example.com'
+CONTACT_EMAIL = 'contact@example.com'  # Where contact form messages will be sent
