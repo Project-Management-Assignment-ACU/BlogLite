@@ -78,10 +78,10 @@
 | C‑01 | Set up `pytest` | requirements.txt, pytest.ini | Completed ✅ |
 | C‑02 | Write smoke test | tests/test_smoke.py | Completed ✅ |
 | C‑03 | Configure `black` & `flake8` | pyproject.toml | Completed ✅ |
-| C‑04 | Pre‑commit hook config | .pre‑commit‑config.yaml | Not Complete ❌ |
-| C‑05 | Manual test plan document | docs/test‑plan.md | Not Complete ❌ |
-| C‑06 | Lint/format CI note (local) | docs/lint‑guide.md | Not Complete ❌ |
-| C‑07 | Coverage report generation | docs/coverage.md | Not Complete ❌ |
+| C‑04 | Pre‑commit hook config | .pre‑commit‑config.yaml | Completed ✅ |
+| C‑05 | Manual test plan document | docs/test‑plan.md | Completed ✅ |
+| C‑06 | Lint/format CI note (local) | docs/lint‑guide.md | Completed ✅ |
+| C‑07 | Coverage report generation | docs/coverage.md | Completed ✅ |
 | C‑08 | Backup script for SQLite | scripts/backup.sh | Not Complete ❌ |
 | C‑09 | Deployment guide (PythonAnywhere) | docs/deploy.md | Not Complete ❌ |
 | C‑10 | Release checklist | docs/release‑checklist.md | Not Complete ❌ |
