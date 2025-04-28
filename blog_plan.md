@@ -75,7 +75,7 @@
 ### 4.3 Member C — QA & Documentation (12 Tasks)
 | ID | Issue Title | Key Files | Status |
 |---|---|---|---|
-| C‑01 | Set up `pytest` | requirements.txt, pytest.ini | Not Complete ❌ |
+| C‑01 | Set up `pytest` | requirements.txt, pytest.ini | Completed ✅ |
 | C‑02 | Write smoke test | tests/test_smoke.py | Not Complete ❌ |
 | C‑03 | Configure `black` & `flake8` | pyproject.toml | Not Complete ❌ |
 | C‑04 | Pre‑commit hook config | .pre‑commit‑config.yaml | Not Complete ❌ |
