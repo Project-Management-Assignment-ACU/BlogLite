@@ -3,7 +3,7 @@
 > **Team Size:** 3 students  
 > **Duration:** 2 weeks  
 > **Goal:** Publish a lightweight Django blog site (Home, About, Contact, Blog CRUD). No Docker, no GitHub Actions—just plain Django + Bootstrap + SQLite.
-> **Status:** Completed ✅ 
+> **Status:** In Progress 🔄 
 
 ---
 ## 1 · Scope at a Glance
@@ -21,7 +21,7 @@
 |---|---|---|---|
 | Burak | Front‑end | HTML templates, Bootstrap tweaks, UX | Completed ✅ |
 | Tolga | Back‑end | Models, views, URL routing | Completed ✅ |
-| Şakir | QA & Docs | Testing, lint/format, deployment docs | Completed ✅ |
+| Şakir | QA & Docs | Testing, lint/format, deployment docs | Not Complete ❌ |
 
 *Each member owns ≥ 12 GitHub Issues and touches ≥ 5 files.*
 
@@ -75,18 +75,18 @@
 ### 4.3 Member C — QA & Documentation (12 Tasks)
 | ID | Issue Title | Key Files | Status |
 |---|---|---|---|
-| C‑01 | Set up `pytest` | requirements.txt, pytest.ini | Completed ✅ |
-| C‑02 | Write smoke test | tests/test_smoke.py | Completed ✅ |
-| C‑03 | Configure `black` & `flake8` | pyproject.toml | Completed ✅ |
-| C‑04 | Pre‑commit hook config | .pre‑commit‑config.yaml | Completed ✅ |
-| C‑05 | Manual test plan document | docs/test‑plan.md | Completed ✅ |
-| C‑06 | Lint/format CI note (local) | docs/lint‑guide.md | Completed ✅ |
-| C‑07 | Coverage report generation | docs/coverage.md | Completed ✅ |
-| C‑08 | Backup script for SQLite | scripts/backup.sh | Completed ✅ |
-| C‑09 | Deployment guide (PythonAnywhere) | docs/deploy.md | Completed ✅ |
-| C‑10 | Release checklist | docs/release‑checklist.md | Completed ✅ |
-| C‑11 | Create LICENSE file | LICENSE | Completed ✅ |
-| C‑12 | Add project logo/favicon | static/img/logo.png | Completed ✅ |
+| C‑01 | Set up `pytest` | requirements.txt, pytest.ini | Not Complete ❌ |
+| C‑02 | Write smoke test | tests/test_smoke.py | Not Complete ❌ |
+| C‑03 | Configure `black` & `flake8` | pyproject.toml | Not Complete ❌ |
+| C‑04 | Pre‑commit hook config | .pre‑commit‑config.yaml | Not Complete ❌ |
+| C‑05 | Manual test plan document | docs/test‑plan.md | Not Complete ❌ |
+| C‑06 | Lint/format CI note (local) | docs/lint‑guide.md | Not Complete ❌ |
+| C‑07 | Coverage report generation | docs/coverage.md | Not Complete ❌ |
+| C‑08 | Backup script for SQLite | scripts/backup.sh | Not Complete ❌ |
+| C‑09 | Deployment guide (PythonAnywhere) | docs/deploy.md | Not Complete ❌ |
+| C‑10 | Release checklist | docs/release‑checklist.md | Not Complete ❌ |
+| C‑11 | Create LICENSE file | LICENSE | Not Complete ❌ |
+| C‑12 | Add project logo/favicon | static/img/logo.png | Not Complete ❌ |
 
 ---
 ## 5 · Folder Overview
@@ -125,11 +125,6 @@ simple_blog/
 
 ---
 ### Project Completion
-All tasks have been completed successfully. The blog application has been fully implemented with:
-- Complete front-end templates and styling
-- Fully functional back-end with models, views, and URLs
-- Comprehensive testing and documentation
-- Demo data with fixture files
-- Ready for deployment
+Project is still in progress. While front-end and back-end tasks have been completed successfully, QA and documentation tasks are still pending.
 
-Project completed on time and according to specifications. 🎉
+Project not fully completed, pending Member C's tasks. 🔄
