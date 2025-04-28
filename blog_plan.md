@@ -85,7 +85,7 @@
 | C‑08 | Backup script for SQLite | scripts/backup.sh | Completed ✅ |
 | C‑09 | Deployment guide (PythonAnywhere) | docs/deploy.md | Completed ✅ |
 | C‑10 | Release checklist | docs/release‑checklist.md | Completed ✅ |
-| C‑11 | Create LICENSE file | LICENSE | Not Complete ❌ |
+| C‑11 | Create LICENSE file | LICENSE | Completed ✅ |
 | C‑12 | Add project logo/favicon | static/img/logo.png | Not Complete ❌ |
 
 ---
