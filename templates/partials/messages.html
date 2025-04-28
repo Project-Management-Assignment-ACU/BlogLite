@@ -29,13 +29,13 @@
                 autohide: true,
                 delay: 5000
             });
-            
+
             // Auto show on page load
             toast.show();
-            
+
             return toast;
         });
-        
+
         // Remove toasts after they're hidden
         toastElList.forEach(toast => {
             toast.addEventListener('hidden.bs.toast', function () {
@@ -44,4 +44,4 @@
         });
     });
 </script>
-{% endif %} 
+{% endif %}

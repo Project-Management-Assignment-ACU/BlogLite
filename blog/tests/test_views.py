@@ -1,13 +1,18 @@
-from django.test import TestCase, Client
-from django.urls import reverse
+"""Blog uygulamasının view testlerini içerir."""
+
 from django.contrib.auth.models import User
-from blog.models import BlogPost
+from django.test import Client, TestCase
+from django.urls import reverse
+
 from blog.forms import BlogPostForm
+from blog.models import BlogPost
 
 
 class BlogViewsTest(TestCase):
+    """Blog view'ları için temel test sınıfı."""
+
     def setUp(self):
-        """Set up data for the test methods"""
+        """Test metodları için gerekli verileri oluşturur."""
         # Create two test users
         self.client = Client()
         self.user1 = User.objects.create_user(
@@ -33,30 +38,32 @@ class BlogViewsTest(TestCase):
 
 
 class BlogPostListViewTest(BlogViewsTest):
+    """Blog gönderilerinin listelendiği view için test sınıfı."""
+
     def test_view_url_exists(self):
-        """Test that the URL for the blog list view exists"""
+        """Doğrular ki blog listesi URL'si var."""
         response = self.client.get("/blog/")
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        """Test that the URL is accessible by name"""
+        """URL'nin isim ile erişilebilir olduğunu test eder."""
         response = self.client.get(reverse("blog:post_list"))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        """Test that the correct template is used"""
+        """Doğru şablonun kullanıldığını test eder."""
         response = self.client.get(reverse("blog:post_list"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/list.html")
 
     def test_view_lists_all_posts(self):
-        """Test that all posts are displayed"""
+        """Tüm gönderilerin listelendiğini test eder."""
         response = self.client.get(reverse("blog:post_list"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["posts"]), 2)
 
     def test_pagination_is_five(self):
-        """Test that pagination is set to 5 per page"""
+        """Sayfalandırmanın sayfa başına 5 gönderi olduğunu test eder."""
         # Create 8 additional posts for a total of 10
         for i in range(8):
             BlogPost.objects.create(
@@ -73,7 +80,7 @@ class BlogPostListViewTest(BlogViewsTest):
         self.assertEqual(len(response.context["posts"]), 5)
 
     def test_search_filters_posts(self):
-        """Test that search functionality filters posts correctly"""
+        """Arama işlevinin gönderileri doğru filtrelediğini test eder."""
         response = self.client.get(f"{reverse('blog:post_list')}?search=first")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context["posts"]), 1)
@@ -81,37 +88,41 @@ class BlogPostListViewTest(BlogViewsTest):
 
 
 class BlogPostDetailViewTest(BlogViewsTest):
+    """Blog gönderilerinin detay sayfası için test sınıfı."""
+
     def test_view_url_exists(self):
-        """Test that the URL for the blog detail view exists"""
+        """Blog detay sayfası URL'sinin var olduğunu test eder."""
         response = self.client.get(f"/blog/post/{self.post1.slug}/")
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        """Test that the URL is accessible by name"""
+        """URL'nin isim ile erişilebilir olduğunu test eder."""
         response = self.client.get(reverse("blog:post_detail", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        """Test that the correct template is used"""
+        """Doğru şablonun kullanıldığını test eder."""
         response = self.client.get(reverse("blog:post_detail", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/detail.html")
 
     def test_view_displays_correct_post(self):
-        """Test that the correct post is displayed"""
+        """Doğrular ki doğru gönderi görüntüleniyor."""
         response = self.client.get(reverse("blog:post_detail", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context["post"], self.post1)
 
     def test_404_for_nonexistent_post(self):
-        """Test that a 404 is returned for a nonexistent post"""
+        """Var olmayan gönderi için 404 döndürüldüğünü test eder."""
         response = self.client.get(reverse("blog:post_detail", kwargs={"slug": "nonexistent-post"}))
         self.assertEqual(response.status_code, 404)
 
 
 class BlogPostCreateViewTest(BlogViewsTest):
+    """Blog gönderisi oluşturma view'ı için test sınıfı."""
+
     def test_redirect_if_not_logged_in(self):
-        """Test that unauthenticated users are redirected"""
+        """Giriş yapmamış kullanıcıların yönlendirildiğini test eder."""
         response = self.client.get(reverse("blog:post_create"))
         self.assertEqual(response.status_code, 302)  # Check it's a redirect
         self.assertTrue(
@@ -119,33 +130,33 @@ class BlogPostCreateViewTest(BlogViewsTest):
         )  # Check redirect destination starts with login URL
 
     def test_view_url_exists_at_desired_location(self):
-        """Test that the URL for the blog create view exists"""
+        """Blog oluşturma URL'sinin var olduğunu test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get("/blog/post/new/")
         self.assertEqual(response.status_code, 200)
 
     def test_view_url_accessible_by_name(self):
-        """Test that the URL is accessible by name"""
+        """URL'nin isim ile erişilebilir olduğunu test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_create"))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        """Test that the correct template is used"""
+        """Doğru şablonun kullanıldığını test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_create"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/form.html")
 
     def test_form_is_rendered(self):
-        """Test that the form is rendered in the context"""
+        """Formun context'te olduğunu test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_create"))
         self.assertEqual(response.status_code, 200)
         self.assertIsInstance(response.context["form"], BlogPostForm)
 
     def test_post_creation(self):
-        """Test creating a new post"""
+        """Yeni gönderi oluşturmayı test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         post_count = BlogPost.objects.count()
 
@@ -163,8 +174,10 @@ class BlogPostCreateViewTest(BlogViewsTest):
 
 
 class BlogPostUpdateViewTest(BlogViewsTest):
+    """Blog gönderisi güncelleme view'ı için test sınıfı."""
+
     def test_redirect_if_not_logged_in(self):
-        """Test that unauthenticated users are redirected"""
+        """Giriş yapmamış kullanıcıların yönlendirildiğini test eder."""
         response = self.client.get(reverse("blog:post_update", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 302)  # Check it's a redirect
         self.assertTrue(
@@ -172,7 +185,7 @@ class BlogPostUpdateViewTest(BlogViewsTest):
         )  # Check redirect destination starts with login URL
 
     def test_forbidden_if_not_author(self):
-        """Test that non-authors are redirected with access denied"""
+        """Yazar olmayan kullanıcıların erişiminin engellendiğini test eder."""
         self.client.login(username="testuser2", password="testpassword2")
         response = self.client.get(reverse("blog:post_update", kwargs={"slug": self.post1.slug}))
         self.assertEqual(
@@ -181,20 +194,20 @@ class BlogPostUpdateViewTest(BlogViewsTest):
         self.assertEqual(response.url, reverse("blog:post_list"))  # Should redirect to blog list
 
     def test_view_url_accessible_by_name(self):
-        """Test that the URL is accessible by name for the author"""
+        """URL'nin yazar için isim ile erişilebilir olduğunu test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_update", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        """Test that the correct template is used"""
+        """Doğru şablonun kullanıldığını test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_update", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/form.html")
 
     def test_form_is_rendered_with_post_data(self):
-        """Test that the form is rendered with the post data"""
+        """Doğrular ki form gönderi verileriyle doldurulmuş."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_update", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
@@ -202,7 +215,7 @@ class BlogPostUpdateViewTest(BlogViewsTest):
         self.assertEqual(response.context["form"].instance, self.post1)
 
     def test_post_update(self):
-        """Test updating a post"""
+        """Doğrular ki gönderi güncelleme çalışıyor."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.post(
             reverse("blog:post_update", kwargs={"slug": self.post1.slug}),
@@ -226,8 +239,10 @@ class BlogPostUpdateViewTest(BlogViewsTest):
 
 
 class BlogPostDeleteViewTest(BlogViewsTest):
+    """Blog gönderisi silme view'ı için test sınıfı."""
+
     def test_redirect_if_not_logged_in(self):
-        """Test that unauthenticated users are redirected"""
+        """Giriş yapmamış kullanıcıların yönlendirildiğini test eder."""
         response = self.client.get(reverse("blog:post_delete", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 302)  # Check it's a redirect
         self.assertTrue(
@@ -235,7 +250,7 @@ class BlogPostDeleteViewTest(BlogViewsTest):
         )  # Check redirect destination starts with login URL
 
     def test_forbidden_if_not_author(self):
-        """Test that non-authors are redirected with access denied"""
+        """Yazar olmayan kullanıcıların erişiminin engellendiğini test eder."""
         self.client.login(username="testuser2", password="testpassword2")
         response = self.client.get(reverse("blog:post_delete", kwargs={"slug": self.post1.slug}))
         self.assertEqual(
@@ -244,20 +259,20 @@ class BlogPostDeleteViewTest(BlogViewsTest):
         self.assertEqual(response.url, reverse("blog:post_list"))  # Should redirect to blog list
 
     def test_view_url_accessible_by_name(self):
-        """Test that the URL is accessible by name for the author"""
+        """URL'nin yazar için isim ile erişilebilir olduğunu test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_delete", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
 
     def test_view_uses_correct_template(self):
-        """Test that the correct template is used"""
+        """Doğru şablonun kullanıldığını test eder."""
         self.client.login(username="testuser1", password="testpassword1")
         response = self.client.get(reverse("blog:post_delete", kwargs={"slug": self.post1.slug}))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "blog/confirm_delete.html")
 
     def test_post_deletion(self):
-        """Test deleting a post"""
+        """Doğrular ki gönderi silme çalışıyor."""
         self.client.login(username="testuser1", password="testpassword1")
         post_count = BlogPost.objects.count()
 

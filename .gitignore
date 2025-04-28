@@ -48,4 +48,4 @@ Thumbs.db
 
 # Ignore migration compiled files but keep migrations
 */migrations/*.pyc
-*/migrations/__pycache__/ 
+*/migrations/__pycache__/

@@ -1,20 +1,32 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.urls import reverse_lazy
+"""Blog uygulaması için view sınıflarını içerir.
+
+Bu modül, blog gönderilerinin listelenmesi, görüntülenmesi, oluşturulması,
+düzenlenmesi ve silinmesi için gerekli view sınıflarını içerir.
+"""
+
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
-from .models import BlogPost
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DeleteView, DetailView, ListView, UpdateView
+
 from .forms import BlogPostForm
+from .models import BlogPost
 
 
 class BlogPostListView(ListView):
+    """Blog gönderilerinin listelendiği view.
+
+    Bu view, blog gönderilerini sayfalama, arama ve sıralama özellikleriyle birlikte listeler.
+    """
+
     model = BlogPost
     template_name = "blog/list.html"
     context_object_name = "posts"
     paginate_by = 5
 
     def get_queryset(self):
-        """Return posts ordered by created date with optional filtering"""
+        """Oluşturulma tarihine göre sıralanmış ve filtrelenmiş gönderileri döndürür."""
         queryset = super().get_queryset()
 
         # Apply search filter if provided
@@ -33,7 +45,7 @@ class BlogPostListView(ListView):
         return queryset
 
     def get_context_data(self, **kwargs):
-        """Add additional context for pagination controls"""
+        """Sayfalama kontrolleri için ek context verilerini ekler."""
         context = super().get_context_data(**kwargs)
 
         # Add search query to context for form
@@ -55,12 +67,14 @@ class BlogPostListView(ListView):
         return context
 
     def get_paginate_by(self, queryset):
-        """Allow user to customize page size"""
+        """Kullanıcının sayfa başına gönderi sayısını özelleştirmesine izin verir."""
         page_size = self.request.GET.get("page_size", self.paginate_by)
         return page_size
 
 
 class BlogPostDetailView(DetailView):
+    """Blog gönderilerinin detay sayfasını gösteren view."""
+
     model = BlogPost
     template_name = "blog/detail.html"
     context_object_name = "post"
@@ -68,10 +82,10 @@ class BlogPostDetailView(DetailView):
 
 
 class BlogPostCreateView(LoginRequiredMixin, CreateView):
-    """
-    View for creating a new blog post.
-    Requires user to be logged in.
-    Automatically assigns the current user as the author.
+    """Yeni blog gönderisi oluşturma view'ı.
+
+    Kullanıcının giriş yapmış olmasını gerektirir.
+    Mevcut kullanıcıyı otomatik olarak yazar olarak atar.
     """
 
     model = BlogPost
@@ -80,12 +94,14 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
     login_url = "/login/"  # Where to redirect if user is not logged in
 
     def get_context_data(self, **kwargs):
+        """Form şablonu için başlık ve buton metni ekler."""
         context = super().get_context_data(**kwargs)
         context["title"] = "Create a New Blog Post"
         context["button_text"] = "Create Post"
         return context
 
     def form_valid(self, form):
+        """Form geçerliyse yazarı atar ve başarı mesajı gösterir."""
         # Set the author to current user
         form.instance.author = self.request.user
 
@@ -100,6 +116,7 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
         return response
 
     def form_invalid(self, form):
+        """Form geçersizse hata mesajı gösterir."""
         messages.error(
             self.request,
             "There was an error with your submission. Please check the form and try again.",
@@ -108,9 +125,9 @@ class BlogPostCreateView(LoginRequiredMixin, CreateView):
 
 
 class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    """
-    View for updating an existing blog post.
-    Requires user to be logged in and the author of the post.
+    """Mevcut blog gönderisini düzenleme view'ı.
+
+    Kullanıcının giriş yapmış olmasını ve gönderinin yazarı olmasını gerektirir.
     """
 
     model = BlogPost
@@ -120,17 +137,19 @@ class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     login_url = "/login/"
 
     def test_func(self):
-        """Test if current user is the author of the post"""
+        """Mevcut kullanıcının gönderinin yazarı olup olmadığını kontrol eder."""
         post = self.get_object()
         return self.request.user == post.author
 
     def get_context_data(self, **kwargs):
+        """Form şablonu için başlık ve buton metni ekler."""
         context = super().get_context_data(**kwargs)
         context["title"] = f"Edit Blog Post: {self.get_object().title}"
         context["button_text"] = "Update Post"
         return context
 
     def form_valid(self, form):
+        """Form geçerliyse başarı mesajı gösterir."""
         response = super().form_valid(form)
         messages.success(
             self.request, f'The blog post "{form.instance.title}" has been updated successfully!'
@@ -138,6 +157,7 @@ class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return response
 
     def form_invalid(self, form):
+        """Form geçersizse hata mesajı gösterir."""
         messages.error(
             self.request,
             "There was an error updating your post. Please check the form and try again.",
@@ -145,7 +165,7 @@ class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return super().form_invalid(form)
 
     def handle_no_permission(self):
-        """Override to provide custom message when user is not the author"""
+        """Kullanıcı yazar değilse özel hata mesajı gösterir."""
         if self.request.user.is_authenticated:
             messages.error(self.request, "You don't have permission to edit this post.")
             return HttpResponseRedirect(reverse_lazy("blog:post_list"))
@@ -153,9 +173,9 @@ class BlogPostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 
 class BlogPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    """
-    View for deleting a blog post.
-    Requires user to be logged in and the author of the post.
+    """Blog gönderisi silme view'ı.
+
+    Kullanıcının giriş yapmış olmasını ve gönderinin yazarı olmasını gerektirir.
     """
 
     model = BlogPost
@@ -165,11 +185,12 @@ class BlogPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     login_url = "/login/"
 
     def test_func(self):
-        """Test if current user is the author of the post"""
+        """Mevcut kullanıcının gönderinin yazarı olup olmadığını kontrol eder."""
         post = self.get_object()
         return self.request.user == post.author
 
     def delete(self, request, *args, **kwargs):
+        """Gönderiyi siler ve başarı mesajı gösterir."""
         post = self.get_object()
         messages.success(
             self.request, f'The blog post "{post.title}" has been deleted successfully!'
@@ -177,7 +198,7 @@ class BlogPostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
     def handle_no_permission(self):
-        """Override to provide custom message when user is not the author"""
+        """Kullanıcı yazar değilse özel hata mesajı gösterir."""
         if self.request.user.is_authenticated:
             messages.error(self.request, "You don't have permission to delete this post.")
             return HttpResponseRedirect(reverse_lazy("blog:post_list"))

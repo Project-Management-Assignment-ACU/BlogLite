@@ -30,10 +30,10 @@ A lightweight blogging platform built with Django, designed for simplicity and e
 2. Create and activate a virtual environment:
    ```bash
    python -m venv venv
-   
+
    # On Windows
    venv\Scripts\activate
-   
+
    # On macOS/Linux
    source venv/bin/activate
    ```
@@ -85,4 +85,4 @@ A lightweight blogging platform built with Django, designed for simplicity and e
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
+This project is licensed under the MIT License - see the LICENSE file for details.

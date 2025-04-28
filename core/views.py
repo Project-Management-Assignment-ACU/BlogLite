@@ -1,30 +1,46 @@
-from django.shortcuts import render, redirect
-from django.views.generic import TemplateView, FormView, CreateView
-from django.urls import reverse_lazy
-from django.contrib import messages
-from django.core.mail import send_mail
+"""Temel uygulama view'larını içerir.
+
+Bu modül, kullanıcı kimlik doğrulama ve ana sayfa gibi
+temel uygulama işlevlerini sağlayan view'ları içerir.
+"""
+
 from django.conf import settings
-from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.forms import AuthenticationForm
-from .forms import ContactForm, UserRegistrationForm
+from django.contrib import messages
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.views import LoginView as AuthLoginView
+from django.contrib.auth.views import LogoutView as AuthLogoutView
+from django.core.mail import send_mail
+from django.shortcuts import redirect, render
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, FormView, TemplateView
+
+from .forms import ContactForm
 
 # Create your views here.
 
 
 class HomeView(TemplateView):
-    template_name = "home.html"
+    """Ana sayfa view'ı."""
+
+    template_name = "core/home.html"
 
 
 class AboutView(TemplateView):
+    """Hakkımızda sayfası view'ı."""
+
     template_name = "about.html"
 
 
 class ContactView(FormView):
+    """İletişim formu view'ı."""
+
     template_name = "contact.html"
     form_class = ContactForm
     success_url = reverse_lazy("core:contact")
 
     def form_valid(self, form):
+        """Form geçerliyse e-posta gönderir."""
         # Get form data
         name = form.cleaned_data["name"]
         email = form.cleaned_data["email"]
@@ -62,30 +78,47 @@ class ContactView(FormView):
         return super().form_valid(form)
 
 
-class CustomLoginView(FormView):
-    template_name = "auth/login.html"
-    form_class = AuthenticationForm
-    success_url = reverse_lazy("core:home")
+class LoginView(AuthLoginView):
+    """Kullanıcı giriş view'ı."""
+
+    template_name = "core/login.html"
+    next_page = "home"
+
+
+class LogoutView(AuthLogoutView):
+    """Kullanıcı çıkış view'ı."""
+
+    next_page = "home"
+
+
+class RegisterView(CreateView):
+    """Kullanıcı kayıt view'ı."""
+
+    template_name = "core/register.html"
+    form_class = UserCreationForm
+    success_url = reverse_lazy("home")
 
     def form_valid(self, form):
-        username = form.cleaned_data.get("username")
-        password = form.cleaned_data.get("password")
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            login(self.request, user)
-            messages.success(self.request, f"Welcome back, {username}!")
-            return super().form_valid(form)
-        else:
-            return self.form_invalid(form)
+        """Form geçerliyse kullanıcıyı oluşturur ve giriş yapar."""
+        response = super().form_valid(form)
+        login(self.request, self.object)
+        messages.success(self.request, "Registration successful!")
+        return response
 
     def form_invalid(self, form):
-        messages.error(self.request, "Invalid username or password. Please try again.")
+        """Form geçersizse hata mesajı gösterir."""
+        messages.error(self.request, "Registration failed. Please check the form.")
         return super().form_invalid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        """Giriş yapmış kullanıcıları ana sayfaya yönlendirir."""
+        if request.user.is_authenticated:
+            return redirect("home")
+        return super().dispatch(request, *args, **kwargs)
 
 
 def logout_view(request):
-    """Simple logout view that renders a confirmation page and processes logout"""
+    """Çıkış işlemini gerçekleştirir ve onay sayfasını gösterir."""
     if request.method == "POST":
         # User confirmed logout
         logout(request)
@@ -94,24 +127,3 @@ def logout_view(request):
 
     # GET request - show the logout confirmation page
     return render(request, "auth/logout.html")
-
-
-class RegisterView(CreateView):
-    template_name = "auth/register.html"
-    form_class = UserRegistrationForm
-    success_url = reverse_lazy("login")
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        username = form.cleaned_data.get("username")
-        messages.success(
-            self.request, f"Account created successfully for {username}! You can now log in."
-        )
-        return response
-
-    def form_invalid(self, form):
-        messages.error(
-            self.request,
-            "There was an error with your registration. Please check the form and try again.",
-        )
-        return super().form_invalid(form)

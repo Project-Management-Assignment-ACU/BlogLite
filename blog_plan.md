@@ -1,9 +1,9 @@
 # Simple Django Blog — Project Plan
 
-> **Team Size:** 3 students  
-> **Duration:** 2 weeks  
+> **Team Size:** 3 students
+> **Duration:** 2 weeks
 > **Goal:** Publish a lightweight Django blog site (Home, About, Contact, Blog CRUD). No Docker, no GitHub Actions—just plain Django + Bootstrap + SQLite.
-> **Status:** In Progress 🔄 
+> **Status:** In Progress 🔄
 
 ---
 ## 1 · Scope at a Glance

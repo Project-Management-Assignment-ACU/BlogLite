@@ -1,9 +1,23 @@
+"""Blog uygulaması için form sınıflarını içerir.
+
+Bu modül, blog gönderilerinin oluşturulması ve düzenlenmesi için gerekli
+form sınıflarını içerir.
+"""
+
 from django import forms
-from .models import BlogPost
 from django.core.validators import MinLengthValidator
+
+from .models import BlogPost
 
 
 class BlogPostForm(forms.ModelForm):
+    """Blog gönderisi oluşturma ve düzenleme formu.
+
+    Bu form, blog gönderilerinin başlık ve içerik alanlarını içerir.
+    Her iki alan için minimum uzunluk doğrulaması yapar ve
+    Markdown formatında içerik girişini destekler.
+    """
+
     title = forms.CharField(
         max_length=200,
         validators=[MinLengthValidator(5, "Title must be at least 5 characters long")],
@@ -29,11 +43,16 @@ class BlogPostForm(forms.ModelForm):
     )
 
     class Meta:
+        """Form meta sınıfı model ve alan bilgilerini içerir."""
+
         model = BlogPost
         fields = ["title", "body"]
 
     def clean_title(self):
-        """Custom validation for title field"""
+        """Başlık alanı için özel doğrulama yapar.
+
+        'test' kelimesinin başlık olarak kullanılmasını engeller.
+        """
         title = self.cleaned_data.get("title")
         if title and title.lower() == "test":
             raise forms.ValidationError("Please choose a more descriptive title")

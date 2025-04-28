@@ -8,7 +8,7 @@ Blog | Simple Blog
 {% block content %}
 <div class="container">
     <h1 class="display-5 mb-4 text-center">Blog Posts</h1>
-    
+
     <!-- Search and filters -->
     <div class="card mb-4">
         <div class="card-body">
@@ -42,7 +42,7 @@ Blog | Simple Blog
             </form>
         </div>
     </div>
-    
+
     {% if posts %}
         <div class="row">
             {% for post in posts %}
@@ -62,7 +62,7 @@ Blog | Simple Blog
                 </div>
             {% endfor %}
         </div>
-        
+
         <!-- Pagination -->
         {% if is_paginated %}
         <nav aria-label="Page navigation" class="mt-4">
@@ -90,7 +90,7 @@ Blog | Simple Blog
                         </a>
                     </li>
                 {% endif %}
-                
+
                 {% for num in page_obj.paginator.page_range %}
                     {% if page_obj.number == num %}
                         <li class="page-item active">
@@ -102,7 +102,7 @@ Blog | Simple Blog
                         </li>
                     {% endif %}
                 {% endfor %}
-                
+
                 {% if page_obj.has_next %}
                     <li class="page-item">
                         <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if query_params %}&{{ query_params }}{% endif %}" aria-label="Next">
@@ -128,7 +128,7 @@ Blog | Simple Blog
                 {% endif %}
             </ul>
         </nav>
-        
+
         <div class="text-center mt-3">
             <p class="small text-muted">
                 Showing page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}

@@ -1,4 +1,7 @@
+"""Blog uygulaması için URL yapılandırmalarını içerir."""
+
 from django.urls import path
+
 from . import views
 
 app_name = "blog"

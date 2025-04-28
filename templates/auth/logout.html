@@ -11,7 +11,7 @@ Logout | Simple Blog
         <div class="card shadow">
             <div class="card-body text-center">
                 <h1 class="display-5 mb-4">Logout</h1>
-                
+
                 {% if user.is_authenticated %}
                     <p class="mb-4">Are you sure you want to logout, {{ user.username }}?</p>
                     <form method="post">
@@ -31,4 +31,4 @@ Logout | Simple Blog
         </div>
     </div>
 </div>
-{% endblock %} 
+{% endblock %}
