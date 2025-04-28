@@ -84,7 +84,7 @@
 | C‑07 | Coverage report generation | docs/coverage.md | Completed ✅ |
 | C‑08 | Backup script for SQLite | scripts/backup.sh | Completed ✅ |
 | C‑09 | Deployment guide (PythonAnywhere) | docs/deploy.md | Completed ✅ |
-| C‑10 | Release checklist | docs/release‑checklist.md | Not Complete ❌ |
+| C‑10 | Release checklist | docs/release‑checklist.md | Completed ✅ |
 | C‑11 | Create LICENSE file | LICENSE | Not Complete ❌ |
 | C‑12 | Add project logo/favicon | static/img/logo.png | Not Complete ❌ |
 
