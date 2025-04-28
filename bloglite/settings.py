@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-#_f)jm0m_r3#4*5f_c-n5=!(cke4lrlbwz+^dmt5xxwpteqdx2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -131,10 +131,10 @@ MEDIA_ROOT = BASE_DIR / "media"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # Development only
-DEFAULT_FROM_EMAIL = 'noreply@example.com'
-CONTACT_EMAIL = 'contact@example.com'  # Where contact form messages will be sent
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"  # Development only
+DEFAULT_FROM_EMAIL = "noreply@example.com"
+CONTACT_EMAIL = "contact@example.com"  # Where contact form messages will be sent
 
 # Login and Logout redirects
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
