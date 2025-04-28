@@ -128,6 +128,3 @@ simple_blog/
 Project is still in progress. While front-end and back-end tasks have been completed successfully, QA and documentation tasks are still pending.
 
 Project not fully completed, pending Member C's tasks. 🔄
-
-
-Test
