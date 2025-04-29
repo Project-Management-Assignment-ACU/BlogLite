@@ -1,32 +1,24 @@
 <!-- templates/auth/logout.html -->
 {% extends "base.html" %}
 
-{% block title %}
-Logout | Simple Blog
-{% endblock %}
+{% block title %}Logout{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-body text-center">
-                <h1 class="display-5 mb-4">Logout</h1>
-
-                {% if user.is_authenticated %}
-                    <p class="mb-4">Are you sure you want to logout, {{ user.username }}?</p>
-                    <form method="post">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Logout Confirmation</h2>
+                    <p class="text-center">Are you sure you want to logout?</p>
+                    <form method="post" action="{% url 'core:logout' %}">
                         {% csrf_token %}
-                        <div class="d-grid gap-2 col-6 mx-auto">
-                            <button type="submit" class="btn btn-danger">Logout</button>
-                            <a href="{% url 'core:home' %}" class="btn btn-outline-secondary">Cancel</a>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-danger">Yes, Logout</button>
+                            <a href="{% url 'core:home' %}" class="btn btn-secondary">No, Take Me Back</a>
                         </div>
                     </form>
-                {% else %}
-                    <div class="alert alert-info mb-4">
-                        <p class="mb-0">You are already logged out.</p>
-                    </div>
-                    <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
-                {% endif %}
+                </div>
             </div>
         </div>
     </div>

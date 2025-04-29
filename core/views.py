@@ -23,7 +23,7 @@ from .forms import ContactForm
 class HomeView(TemplateView):
     """Ana sayfa view'ı."""
 
-    template_name = "core/home.html"
+    template_name = "home.html"
 
 
 class AboutView(TemplateView):
@@ -81,22 +81,34 @@ class ContactView(FormView):
 class LoginView(AuthLoginView):
     """Kullanıcı giriş view'ı."""
 
-    template_name = "core/login.html"
-    next_page = "home"
+    template_name = "auth/login.html"
+    next_page = "core:home"
 
 
 class LogoutView(AuthLogoutView):
     """Kullanıcı çıkış view'ı."""
+    
+    template_name = "auth/logout.html"
+    next_page = reverse_lazy("core:home")
+    http_method_names = ['get', 'post']  # Allow both GET and POST methods
 
-    next_page = "home"
+    def dispatch(self, request, *args, **kwargs):
+        """Handle both GET and POST requests."""
+        if not request.user.is_authenticated:
+            return redirect("core:home")
+        
+        if request.method == "POST":
+            messages.success(request, "You have been logged out successfully.")
+            
+        return super().dispatch(request, *args, **kwargs)
 
 
 class RegisterView(CreateView):
     """Kullanıcı kayıt view'ı."""
 
-    template_name = "core/register.html"
+    template_name = "auth/register.html"
     form_class = UserCreationForm
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("core:home")
 
     def form_valid(self, form):
         """Form geçerliyse kullanıcıyı oluşturur ve giriş yapar."""
@@ -113,17 +125,5 @@ class RegisterView(CreateView):
     def dispatch(self, request, *args, **kwargs):
         """Giriş yapmış kullanıcıları ana sayfaya yönlendirir."""
         if request.user.is_authenticated:
-            return redirect("home")
+            return redirect("core:home")
         return super().dispatch(request, *args, **kwargs)
-
-
-def logout_view(request):
-    """Çıkış işlemini gerçekleştirir ve onay sayfasını gösterir."""
-    if request.method == "POST":
-        # User confirmed logout
-        logout(request)
-        messages.success(request, "You have been logged out successfully.")
-        return redirect("core:home")
-
-    # GET request - show the logout confirmation page
-    return render(request, "auth/logout.html")
