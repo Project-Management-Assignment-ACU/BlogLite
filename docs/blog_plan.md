@@ -21,7 +21,7 @@
 |---|---|---|---|
 | Burak | Front‑end | HTML templates, Bootstrap tweaks, UX | Completed ✅ |
 | Tolga | Back‑end | Models, views, URL routing | Completed ✅ |
-| Şakir | QA & Docs | Testing, lint/format, deployment docs | Not Complete ❌ |
+| Şakir | QA & Docs | Testing, lint/format, deployment docs | Completed ✅   |
 
 *Each member owns ≥ 12 GitHub Issues and touches ≥ 5 files.*
 
