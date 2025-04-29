@@ -1,29 +1,29 @@
-# BlogLite Dağıtım Kılavuzu (PythonAnywhere)
+# BlogLite Deployment Guide (PythonAnywhere)
 
-Bu kılavuz, BlogLite projesinin PythonAnywhere üzerinde nasıl dağıtılacağını adım adım açıklar.
+This guide provides step-by-step instructions for deploying the BlogLite project on PythonAnywhere.
 
-## 1. PythonAnywhere Hesabı Oluşturma
+## 1. Creating a PythonAnywhere Account
 
-1. [PythonAnywhere](https://www.pythonanywhere.com/) sitesine gidin
-2. "Pricing & Signup" sayfasından ücretsiz hesap oluşturun
-3. Hesabınızı doğrulayın ve giriş yapın
+1. Go to [PythonAnywhere](https://www.pythonanywhere.com/)
+2. Create a free account from the "Pricing & Signup" page
+3. Verify your account and log in
 
-## 2. Kod Tabanını Yükleme
+## 2. Uploading the Codebase
 
 ```bash
-# PythonAnywhere Bash konsolunda:
-git clone https://github.com/kullanici_adi/BlogLite.git
+# In PythonAnywhere Bash console:
+git clone https://github.com/username/BlogLite.git
 cd BlogLite
 ```
 
-## 3. Sanal Ortam Oluşturma
+## 3. Creating Virtual Environment
 
 ```bash
 mkvirtualenv --python=/usr/bin/python3.9 bloglite-env
 pip install -r requirements.txt
 ```
 
-## 4. Veritabanı Ayarları
+## 4. Database Settings
 
 ```bash
 cd BlogLite
@@ -31,20 +31,20 @@ python manage.py migrate
 python manage.py createsuperuser
 ```
 
-## 5. Web Uygulaması Yapılandırma
+## 5. Web Application Configuration
 
-1. PythonAnywhere Dashboard'da "Web" sekmesine gidin
-2. "Add a new web app" seçin
-3. Manuel yapılandırma -> Python 3.9 seçin
-4. Yapılandırma dosyasını şu şekilde düzenleyin:
+1. Go to "Web" tab in PythonAnywhere Dashboard
+2. Select "Add a new web app"
+3. Choose manual configuration -> Python 3.9
+4. Edit the configuration file as follows:
 
 ```python
-# /var/www/kullanici_adi_pythonanywhere_com_wsgi.py
+# /var/www/username_pythonanywhere_com_wsgi.py
 
 import os
 import sys
 
-path = '/home/kullanici_adi/BlogLite'
+path = '/home/username/BlogLite'
 if path not in sys.path:
     sys.path.append(path)
 
@@ -54,44 +54,44 @@ from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 ```
 
-## 6. Statik Dosyaları Toplama
+## 6. Collecting Static Files
 
 ```bash
 python manage.py collectstatic
 ```
 
-## 7. PythonAnywhere Yapılandırması
+## 7. PythonAnywhere Configuration
 
-Web sekmesinde aşağıdaki ayarları yapın:
+Configure the following settings in the Web tab:
 
 ### Virtualenv:
 ```
-/home/kullanici_adi/.virtualenvs/bloglite-env
+/home/username/.virtualenvs/bloglite-env
 ```
 
 ### Static files:
 ```
 URL: /static/
-Directory: /home/kullanici_adi/BlogLite/staticfiles
+Directory: /home/username/BlogLite/staticfiles
 ```
 
 ### WSGI configuration file:
 ```
-/var/www/kullanici_adi_pythonanywhere_com_wsgi.py
+/var/www/username_pythonanywhere_com_wsgi.py
 ```
 
-## 8. Güvenlik Ayarları
+## 8. Security Settings
 
-`core/settings.py` dosyasında:
+In `core/settings.py`:
 
 ```python
 DEBUG = False
-ALLOWED_HOSTS = ['kullanici_adi.pythonanywhere.com']
+ALLOWED_HOSTS = ['username.pythonanywhere.com']
 ```
 
-## 9. E-posta Ayarları
+## 9. Email Settings
 
-PythonAnywhere'in SMTP sunucusunu kullanmak için:
+To use PythonAnywhere's SMTP server:
 
 ```python
 EMAIL_HOST = 'smtp.gmail.com'
@@ -101,37 +101,37 @@ EMAIL_HOST_USER = 'your-email@gmail.com'
 EMAIL_HOST_PASSWORD = 'your-app-specific-password'
 ```
 
-## 10. Son Adımlar
+## 10. Final Steps
 
-1. Web uygulamasını yeniden başlatın
-2. Hata günlüklerini kontrol edin
-3. Site bağlantısını test edin: `https://kullanici_adi.pythonanywhere.com`
+1. Restart the web application
+2. Check error logs
+3. Test site connection: `https://username.pythonanywhere.com`
 
-## Sorun Giderme
+## Troubleshooting
 
-### Sık Karşılaşılan Hatalar
+### Common Errors
 
 1. **500 Internal Server Error**
-   - Hata günlüklerini kontrol edin
-   - DEBUG = True yaparak detaylı hata mesajını görün
+   - Check error logs
+   - Set DEBUG = True to see detailed error message
 
-2. **Statik Dosyalar Yüklenmiyor**
-   - `collectstatic` komutunu tekrar çalıştırın
-   - Statik dosya yollarını kontrol edin
+2. **Static Files Not Loading**
+   - Run `collectstatic` again
+   - Verify static file paths
 
-3. **Veritabanı Hataları**
-   - Migrationları kontrol edin
-   - Veritabanı izinlerini kontrol edin
+3. **Database Errors**
+   - Check migrations
+   - Verify database permissions
 
-### Günlük Dosyaları
+### Log Files
 
-- Error log: `/var/log/kullanici_adi.pythonanywhere.com.error.log`
-- Access log: `/var/log/kullanici_adi.pythonanywhere.com.access.log`
-- Server log: `/var/log/kullanici_adi.pythonanywhere.com.server.log`
+- Error log: `/var/log/username.pythonanywhere.com.error.log`
+- Access log: `/var/log/username.pythonanywhere.com.access.log`
+- Server log: `/var/log/username.pythonanywhere.com.server.log`
 
-## Bakım
+## Maintenance
 
-### Güncellemeler
+### Updates
 
 ```bash
 cd BlogLite
@@ -141,22 +141,22 @@ python manage.py migrate
 python manage.py collectstatic
 ```
 
-### Yedekleme
+### Backup
 
-1. Veritabanı yedekleme:
+1. Database backup:
 ```bash
 ./scripts/backup.sh
 ```
 
-2. Media dosyalarını yedekleme:
+2. Media files backup:
 ```bash
 tar -czf media_backup.tar.gz media/
 ```
 
-## Güvenlik Tavsiyeleri
+## Security Recommendations
 
-1. Düzenli güvenlik güncellemelerini yapın
-2. DEBUG modunu kapalı tutun
-3. Güçlü şifreler kullanın
-4. HTTPS kullanımını zorunlu kılın
-5. Düzenli yedekleme alın
+1. Apply regular security updates
+2. Keep DEBUG mode disabled
+3. Use strong passwords
+4. Enforce HTTPS
+5. Take regular backups

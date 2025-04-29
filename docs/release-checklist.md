@@ -1,92 +1,92 @@
-# BlogLite Yayın Öncesi Kontrol Listesi
+# BlogLite Pre-Release Checklist
 
-## 1. Kod Kalitesi ve Test
+## 1. Code Quality and Testing
 
-- [ ] Tüm testler başarıyla geçiyor (`pytest`)
-- [ ] Test coverage %80'in üzerinde
-- [ ] Kod formatlaması kontrol edildi (`black`)
-- [ ] Kod kalitesi kontrol edildi (`flake8`)
-- [ ] Import sıralaması kontrol edildi (`isort`)
-- [ ] Tüm docstring'ler güncel ve doğru
-- [ ] Kullanılmayan importlar ve kod blokları temizlendi
-- [ ] Pre-commit hook'lar başarıyla çalışıyor
+- [ ] All tests pass successfully (`pytest`)
+- [ ] Test coverage above 80%
+- [ ] Code formatting checked (`black`)
+- [ ] Code quality checked (`flake8`)
+- [ ] Import ordering checked (`isort`)
+- [ ] All docstrings are up-to-date and correct
+- [ ] Unused imports and code blocks cleaned up
+- [ ] Pre-commit hooks working successfully
 
-## 2. Güvenlik Kontrolleri
+## 2. Security Checks
 
-- [ ] `DEBUG = False` ayarlandı
-- [ ] Gizli anahtarlar ve hassas bilgiler environment variable'lara taşındı
-- [ ] `ALLOWED_HOSTS` doğru yapılandırıldı
-- [ ] HTTPS zorunlu kılındı
-- [ ] Admin paneli URL'i özelleştirildi
-- [ ] Veritabanı yedekleme betiği test edildi
-- [ ] Güvenlik duvarı kuralları kontrol edildi
-- [ ] Tüm paketler güncel ve güvenlik açığı içermiyor
+- [ ] `DEBUG = False` set
+- [ ] Secret keys and sensitive information moved to environment variables
+- [ ] `ALLOWED_HOSTS` properly configured
+- [ ] HTTPS enforced
+- [ ] Admin panel URL customized
+- [ ] Database backup script tested
+- [ ] Firewall rules checked
+- [ ] All packages up-to-date and free of security vulnerabilities
 
-## 3. Performans
+## 3. Performance
 
-- [ ] Statik dosyalar optimize edildi (resimler, CSS, JS)
-- [ ] Veritabanı indeksleri kontrol edildi
-- [ ] Sayfalama (pagination) doğru çalışıyor
-- [ ] Cache mekanizması aktif ve çalışıyor
-- [ ] Debug toolbar kaldırıldı
-- [ ] Gereksiz middleware'ler devre dışı bırakıldı
-- [ ] Database query optimizasyonları yapıldı
+- [ ] Static files optimized (images, CSS, JS)
+- [ ] Database indexes checked
+- [ ] Pagination working correctly
+- [ ] Cache mechanism active and working
+- [ ] Debug toolbar removed
+- [ ] Unnecessary middleware disabled
+- [ ] Database query optimizations done
 
-## 4. Kullanıcı Deneyimi
+## 4. User Experience
 
-- [ ] Tüm formlar doğru çalışıyor
-- [ ] Hata mesajları anlaşılır ve yardımcı
-- [ ] 404 ve 500 hata sayfaları özelleştirildi
-- [ ] Responsive tasarım tüm cihazlarda test edildi
-- [ ] Sayfa yükleme süreleri kabul edilebilir seviyede
-- [ ] Tüm bağlantılar çalışıyor
-- [ ] Kullanıcı geri bildirimleri değerlendirildi
+- [ ] All forms working correctly
+- [ ] Error messages clear and helpful
+- [ ] 404 and 500 error pages customized
+- [ ] Responsive design tested on all devices
+- [ ] Page load times acceptable
+- [ ] All links working
+- [ ] User feedback evaluated
 
-## 5. İçerik ve SEO
+## 5. Content and SEO
 
-- [ ] Tüm metinler yazım hataları için kontrol edildi
-- [ ] Meta etiketleri doğru yapılandırıldı
-- [ ] robots.txt ve sitemap.xml güncel
-- [ ] Sosyal medya meta etiketleri eklendi
-- [ ] Alt metinler ve başlıklar SEO uyumlu
-- [ ] İçerik hiyerarşisi mantıklı
+- [ ] All text checked for spelling errors
+- [ ] Meta tags properly configured
+- [ ] robots.txt and sitemap.xml up-to-date
+- [ ] Social media meta tags added
+- [ ] Alt text and headings SEO-friendly
+- [ ] Content hierarchy logical
 
-## 6. Dağıtım Hazırlıkları
+## 6. Deployment Preparations
 
-- [ ] requirements.txt güncel
-- [ ] Veritabanı migrasyonları temiz
-- [ ] Environment variables dokümante edildi
-- [ ] Statik dosyalar toplandı (`collectstatic`)
-- [ ] WSGI/ASGI yapılandırması test edildi
-- [ ] Dağıtım kılavuzu güncel
-- [ ] Yedekleme stratejisi dokümante edildi
+- [ ] requirements.txt up-to-date
+- [ ] Database migrations clean
+- [ ] Environment variables documented
+- [ ] Static files collected (`collectstatic`)
+- [ ] WSGI/ASGI configuration tested
+- [ ] Deployment guide up-to-date
+- [ ] Backup strategy documented
 
-## 7. Dokümantasyon
+## 7. Documentation
 
-- [ ] README.md güncel
-- [ ] API dokümantasyonu (varsa) güncel
-- [ ] Kurulum kılavuzu test edildi
-- [ ] Değişiklik günlüğü (CHANGELOG) güncellendi
-- [ ] Katkıda bulunma kılavuzu (CONTRIBUTING) güncel
-- [ ] Lisans dosyası mevcut
+- [ ] README.md up-to-date
+- [ ] API documentation (if any) up-to-date
+- [ ] Installation guide tested
+- [ ] Changelog updated
+- [ ] Contributing guide up-to-date
+- [ ] License file present
 
-## 8. Son Kontroller
+## 8. Final Checks
 
-- [ ] Git dalları temiz ve güncel
-- [ ] Tüm çakışmalar çözüldü
-- [ ] Sürüm numarası güncellendi
-- [ ] Release notes hazırlandı
-- [ ] Deployment test ortamında denendi
-- [ ] Rollback planı hazır
-- [ ] Ekip üyeleri bilgilendirildi
+- [ ] Git branches clean and up-to-date
+- [ ] All conflicts resolved
+- [ ] Version number updated
+- [ ] Release notes prepared
+- [ ] Deployment tested in staging environment
+- [ ] Rollback plan ready
+- [ ] Team members informed
 
-## Onay
+## Approval
 
-**Proje Lideri:** _________________
-**Tarih:** _________________
+**Project Leader:** _________________
+**Date:** _________________
 
-## Notlar
+## Notes
 
-- Bu kontrol listesi her yeni sürüm öncesinde doldurulmalıdır
-- Eksik maddeler varsa, yayın ertelenmelidir
-- Kontrol listesi proje ihtiyaçlarına göre güncellenebilir
+- This checklist should be completed before each new release
+- Release should be postponed if any items are missing
+- Checklist can be updated according to project needs

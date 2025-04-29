@@ -3,7 +3,7 @@
 > **Team Size:** 3 students
 > **Duration:** 2 weeks
 > **Goal:** Publish a lightweight Django blog site (Home, About, Contact, Blog CRUD). No Docker, no GitHub Actions—just plain Django + Bootstrap + SQLite.
-> **Status:** Completed ✅
+> **Status:** In Progress 🔄
 
 ---
 ## 1 · Scope at a Glance
@@ -21,7 +21,7 @@
 |---|---|---|---|
 | Burak | Front‑end | HTML templates, Bootstrap tweaks, UX | Completed ✅ |
 | Tolga | Back‑end | Models, views, URL routing | Completed ✅ |
-| Şakir | QA & Docs | Testing, lint/format, deployment docs | Completed ✅ |
+| Şakir | QA & Docs | Testing, lint/format, deployment docs | Not Complete ❌ |
 
 *Each member owns ≥ 12 GitHub Issues and touches ≥ 5 files.*
 
@@ -125,4 +125,6 @@ simple_blog/
 
 ---
 ### Project Completion
-All tasks have been completed successfully. The project meets all requirements and is ready for submission. ✅ 
+Project is still in progress. While front-end and back-end tasks have been completed successfully, QA and documentation tasks are still pending.
+
+Project not fully completed, pending Member C's tasks. 🔄
